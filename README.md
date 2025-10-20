@@ -5,15 +5,37 @@ Segmentation is an essential tool for cell biologists and involves isolating cel
 (Currently supporting: .tif, .tiff) (Capable of handling stacked images)
 
 ## Network Architecture:
-Our network architecture is depicted in Figure 1. We adopted the Attention U-Net structure (Oktay et al., 2018), utilizing the gated attention mechanisms to focus on relevant regions. To maximize the utility of the dataset, we propose to apply a patch-based approach (Ullah et al., 2023) that enables precise pixel-wise segmentation and data augmentation. A threshold-based dynamic loss function was employed to address foreground-background  imbalance in the cropped dataset (see section Dynamic loss Function Selection Method).
+Our network architecture is depicted in **Figure 1.** We adopted the Attention U-Net structure (Oktay et al., 2018), utilizing the gated attention mechanisms to focus on relevant regions. To maximize the utility of the dataset, we propose to apply a patch-based approach (Ullah et al., 2023) that enables precise pixel-wise segmentation and data augmentation. A threshold-based dynamic loss function was employed to address foreground-background  imbalance in the cropped dataset (see section Dynamic loss Function Selection Method).
+
+<p align="center">
+  <img src="./assets/MIDL2025_Overview_of_Training_Paradigm.svg" width="600" alt="Figure 1">
+  <br>
+  <b>Figure 1.</b> Overview of the proposed model architecture.
+</p>
 
 ## Dynamic Loss Function Selecction Method:
-To address the foreground-background imbalance in the cropped dataset while retaining all training patches, we proposed an adaptive, dynamic, threshold-based loss function strategy (see Figure 2.). Predicted masks were categorized into three types: background patches, small ROI patches, and large ROI patches. A patch was classified as a small ROI patch if the predicted foreground area was less than 6.25% of the patch. The overall loss framework combined three loss functions: Binary Cross-Entropy (BCE) loss, Tversky loss, and Focal Tversky loss. Background patches used only BCE loss to encourage true negative predictions. Small ROI patches were optimized using a combination of BCE and Tversky loss to penalize false positives while reinforcing true negatives. In contrast, large ROI patches used a combination of Tversky loss and Focal Tversky loss to intensify penalties on both false positives and false negatives. The loss function changes dynamically for every predicted image. This method stabalized training while preventing model hallucinations (false positives/false negatives) during training and inference. The three loss functions can be changed to adapt to user's specific task. 
+To address the foreground-background imbalance in the cropped dataset while retaining all training patches, we proposed an adaptive, dynamic, threshold-based loss function strategy (see **Figure 2.**). Predicted masks were categorized into three types: background patches, small ROI patches, and large ROI patches. A patch was classified as a small ROI patch if the predicted foreground area was less than 6.25% of the patch. The overall loss framework combined three loss functions: Binary Cross-Entropy (BCE) loss, Tversky loss, and Focal Tversky loss. Background patches used only BCE loss to encourage true negative predictions. Small ROI patches were optimized using a combination of BCE and Tversky loss to penalize false positives while reinforcing true negatives. In contrast, large ROI patches used a combination of Tversky loss and Focal Tversky loss to intensify penalties on both false positives and false negatives. The loss function changes dynamically for every predicted image. This method stabalized training while preventing model hallucinations (false positives/false negatives) during training and inference. The three loss functions can be changed to adapt to user's specific task. 
 
+<p align="center">
+  <img src="./assets/dynamic loss fn selection .svg" width="600" alt="Figure 2">
+  <br>
+  <b>Figure 2.</b> The design of the proposed dynamic loss function selection method.
+</p>
 
-The proposed dynamic loss function selection method was originally designed so that the loss starts from 2.0 and coverges to 0. The loss curve may display a two plateau convergence (See Figure 3). The same 2-plateau trend can also be seen if we strictly add weightings so that the maximum loss is 1.0 (Figure 4). The dataset used for this is the BraTS 2020 dataset, using the same patch-based preprocessing strategy. 
+The proposed dynamic loss function selection method was originally designed so that the loss starts from 2.0 and coverges to 0. The loss curve may display a two plateau convergence (See **Figure 3**). The same 2-plateau trend can also be seen if we strictly add weightings so that the maximum loss is 1.0 (**Figure 4**). The dataset used for this is the BraTS 2020 dataset, using the same patch-based preprocessing strategy with 5 fold CV. The actual effect/mathemathical meaning behind this is still to be discovered. 
 
-
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="./assets/dynamic_loss_function_max_2.png" width="500" alt="Figure 3"><br>
+      <b>Figure 3.</b> The loss curve when maximum loss = 2.0 
+    </td>
+    <td align="center">
+      <img src="./assets/dynamic_loss_function_max_1.png" width="500" alt="Figure 4"><br>
+      <b>Figure 4.</b> The loss curve when maximum loss = 1.0.
+    </td>
+  </tr>
+</table>
 
 ## Installation
 1. Download python version 3.12.4
