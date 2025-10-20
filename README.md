@@ -4,7 +4,7 @@ Often, researchers would seek for a validated model available online and fine-tu
 
 (Currently supporting: .tif, .tiff) (Capable of handling stacked images)
 
-## Network Architecture:
+## Model Architecture:
 Our network architecture is depicted in **Figure 1.** We adopted the Attention U-Net structure (Oktay et al., 2018). To maximize the utility of the dataset, we propose to apply a patch-based approach (Ullah et al., 2023). We further propose a threshold-based dynamic loss function to address severe foreground-background imbalance in the cropped dataset while being able to keep all patches in training (see section **Dynamic loss Function Selection Method**).
 
 <p align="center">
