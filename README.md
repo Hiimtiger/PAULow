@@ -1,11 +1,11 @@
 # PAULow: Patch-based Attention U-Net for Low-resource learning
 
-Segmentation is an essential tool for cell biologists and involves isolating cells or cellular features from microscopy images. An automated segmentation pipeline with high precision and accuracy can significantly reduce manual labor and subjectivity. Frequently, researchers would seek for a validated model available online and fine-tune it to meet their segmentation requirements. However, the established fine-tuning approach may involve online training or computationally intensive offline training. To address this, we propose an offline training pipeline requiring only tens of samples that are morphologically distinct from pre-training data. Specifically, we employed a patch-based attention U-Net trained with a threshold-based custom loss function. Our method improves image segmentation performance by 32.60% and 35.62% over Stardist and Cellpose, respectively, using the same amount of training samples without the need of large-scale pre-training.
+Often, researchers would seek for a validated model available online and fine-tune it to meet their segmentation requirements. However, the established fine-tuning approach may involve online training or computationally intensive offline training. To address this, we propose an offline training pipeline requiring only tens of samples that are morphologically distinct from pre-training data. Our method improves image segmentation performance by 32.60% and 35.62% over Stardist and Cellpose, respectively, using the same amount of training samples without the need of large-scale pre-training.
 
 (Currently supporting: .tif, .tiff) (Capable of handling stacked images)
 
 ## Network Architecture:
-Our network architecture is depicted in **Figure 1.** We adopted the Attention U-Net structure (Oktay et al., 2018), utilizing the gated attention mechanisms to focus on relevant regions. To maximize the utility of the dataset, we propose to apply a patch-based approach (Ullah et al., 2023) that enables precise pixel-wise segmentation and data augmentation. A threshold-based dynamic loss function was employed to address foreground-background  imbalance in the cropped dataset (see section Dynamic loss Function Selection Method).
+Our network architecture is depicted in **Figure 1.** We adopted the Attention U-Net structure (Oktay et al., 2018). To maximize the utility of the dataset, we propose to apply a patch-based approach (Ullah et al., 2023). A threshold-based dynamic loss function was employed to address foreground-background imbalance in the cropped dataset (see section Dynamic loss Function Selection Method).
 
 <p align="center">
   <img src="./assets/MIDL2025_Overview_of_Training_Paradigm.svg" width="600" alt="Figure 1">
