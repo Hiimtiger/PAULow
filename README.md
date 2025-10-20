@@ -5,7 +5,7 @@ Often, researchers would seek for a validated model available online and fine-tu
 (Currently supporting: .tif, .tiff) (Capable of handling stacked images)
 
 ## Network Architecture:
-Our network architecture is depicted in **Figure 1.** We adopted the Attention U-Net structure (Oktay et al., 2018). To maximize the utility of the dataset, we propose to apply a patch-based approach (Ullah et al., 2023). A threshold-based dynamic loss function was employed to address foreground-background imbalance in the cropped dataset (see section Dynamic loss Function Selection Method).
+Our network architecture is depicted in **Figure 1.** We adopted the Attention U-Net structure (Oktay et al., 2018). To maximize the utility of the dataset, we propose to apply a patch-based approach (Ullah et al., 2023). We further propose a threshold-based dynamic loss function to address severe foreground-background imbalance in the cropped dataset while being able to keep all patches in training (see section Dynamic loss Function Selection Method).
 
 <p align="center">
   <img src="./assets/MIDL2025_Overview_of_Training_Paradigm.svg" width="600" alt="Figure 1">
@@ -14,7 +14,7 @@ Our network architecture is depicted in **Figure 1.** We adopted the Attention U
 </p>
 
 ## Dynamic Loss Function Selecction Method:
-To address the foreground-background imbalance in the cropped dataset while retaining all training patches, we proposed an adaptive, dynamic, threshold-based loss function strategy (see **Figure 2.**). Predicted masks were categorized into three types: background patches, small ROI patches, and large ROI patches. A patch was classified as a small ROI patch if the predicted foreground area was less than 6.25% of the patch. The overall loss framework combined three loss functions: Binary Cross-Entropy (BCE) loss, Tversky loss, and Focal Tversky loss. Background patches used only BCE loss to encourage true negative predictions. Small ROI patches were optimized using a combination of BCE and Tversky loss to penalize false positives while reinforcing true negatives. In contrast, large ROI patches used a combination of Tversky loss and Focal Tversky loss to intensify penalties on both false positives and false negatives. The loss function changes dynamically for every predicted image. This method stabalized training while preventing model hallucinations (false positives/false negatives) during training and inference. The three loss functions can be changed to adapt to user's specific task. 
+To address the foreground-background imbalance in the cropped dataset while retaining all training patches, we proposed an adaptive, dynamic, threshold-based loss function strategy (see **Figure 2.**). Predicted masks were categorized into three types: background patches, small ROI patches, and large ROI patches. A patch was classified as a small ROI patch if the predicted foreground area was less than 6.25% of the patch. The overall loss framework combined three loss functions: Binary Cross-Entropy (BCE) loss, Tversky loss, and Focal Tversky loss. The loss function changes dynamically for every predicted image. This method stabalized training while preventing model hallucinations (false positives/false negatives) during training and inference. The trained model is also able to identify foreground and background patches without the need of a classifier head. Furthermore, the three loss functions can also be changed to adapt to user's specific task. 
 
 <p align="center">
   <img src="./assets/dynamic loss fn selection .svg" width="600" alt="Figure 2">
