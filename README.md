@@ -37,6 +37,8 @@ The proposed dynamic loss function selection method was originally designed so t
   </tr>
 </table>
 
+See the **[full PDF version here](./assets/MIDL_2025_Poster_KaiLinChen.pdf)**.
+
 ## Installation
 1. Download python version 3.12.4
 
