@@ -22,7 +22,7 @@ To address the foreground-background imbalance in the cropped dataset while reta
   <b>Figure 2.</b> The design of the proposed dynamic loss function selection method.
 </p>
 
-The proposed dynamic loss function selection method was originally designed so that the loss starts from 2.0 and coverges to 0. The loss curve may display a two plateau convergence (See **Figure 3**). The same 2-plateau trend can also be seen if we strictly add weightings so that the maximum loss is 1.0 (**Figure 4**). The dataset used for this is the BraTS 2020 dataset, using the same patch-based preprocessing strategy with 5 fold CV. The actual effect/mathemathical meaning behind this is still to be discovered. 
+The proposed dynamic loss function selection method was originally designed so that the loss starts from 2.0 and coverges to 0. The loss curve may display a two plateau convergence (See **Figure 3**). The same 2-plateau trend can also be seen if we strictly add weightings so that the maximum loss is 1.0 (**Figure 4**). The dataset used for this is the BraTS 2020 dataset, using the same patch-based preprocessing strategy with 5 fold CV. The actual effect/mathemathical meaning behind this is yet to be discovered. 
 
 <table align="center">
   <tr>
