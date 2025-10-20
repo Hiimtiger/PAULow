@@ -1,10 +1,19 @@
-# PAULow
-PAULow: Patch-based Attention U-Net for Low-resource learning
+# PAULow: Patch-based Attention U-Net for Low-resource learning
 
-Segmentation is an essential tool for cell biologists and involves isolating cells or cellular features from microscopy images. An automated segmentation pipeline with high precision and accuracy can significantly reduce manual labor and subjectivity. Frequently, researchers would seek for a validated model available online and fine-tune it to meet their segmentation requirements. However, the established fine-tuning approach may involve online training or computationally intensive offline training. To address this, we propose an offline training pipeline requiring only tens of samples that are morphologically distinct from pre-training data. Specifically, we employed a patch-based attention U-Net trained with a threshold-based custom loss function.
+Segmentation is an essential tool for cell biologists and involves isolating cells or cellular features from microscopy images. An automated segmentation pipeline with high precision and accuracy can significantly reduce manual labor and subjectivity. Frequently, researchers would seek for a validated model available online and fine-tune it to meet their segmentation requirements. However, the established fine-tuning approach may involve online training or computationally intensive offline training. To address this, we propose an offline training pipeline requiring only tens of samples that are morphologically distinct from pre-training data. Specifically, we employed a patch-based attention U-Net trained with a threshold-based custom loss function. Our method improves image segmentation performance by 32.60% and 35.62% over Stardist and Cellpose, respectively, using the same amount of training samples without the need of large-scale pre-training.
 
-(Currently supporting: .tif, .tiff)
-(Capable of handling stacked images)
+(Currently supporting: .tif, .tiff) (Capable of handling stacked images)
+
+## Network Architecture:
+Our network architecture is depicted in Figure 1. We adopted the Attention U-Net structure (Oktay et al., 2018), utilizing the gated attention mechanisms to focus on relevant regions. To maximize the utility of the dataset, we propose to apply a patch-based approach (Ullah et al., 2023) that enables precise pixel-wise segmentation and data augmentation. A threshold-based dynamic loss function was employed to address foreground-background  imbalance in the cropped dataset (see section Dynamic loss Function Selection Method).
+
+## Dynamic Loss Function Selecction Method:
+To address the foreground-background imbalance in the cropped dataset while retaining all training patches, we proposed an adaptive, dynamic, threshold-based loss function strategy (see Figure 2.). Predicted masks were categorized into three types: background patches, small ROI patches, and large ROI patches. A patch was classified as a small ROI patch if the predicted foreground area was less than 6.25% of the patch. The overall loss framework combined three loss functions: Binary Cross-Entropy (BCE) loss, Tversky loss, and Focal Tversky loss. Background patches used only BCE loss to encourage true negative predictions. Small ROI patches were optimized using a combination of BCE and Tversky loss to penalize false positives while reinforcing true negatives. In contrast, large ROI patches used a combination of Tversky loss and Focal Tversky loss to intensify penalties on both false positives and false negatives. The loss function changes dynamically for every predicted image. This method stabalized training while preventing model hallucinations (false positives/false negatives) during training and inference. The three loss functions can be changed to adapt to user's specific task. 
+
+
+The proposed dynamic loss function selection method was originally designed so that the loss starts from 2.0 and coverges to 0. The loss curve may display a two plateau convergence (See Figure 3). The same 2-plateau trend can also be seen if we strictly add weightings so that the maximum loss is 1.0 (Figure 4). The dataset used for this is the BraTS 2020 dataset, using the same patch-based preprocessing strategy. 
+
+
 
 ## Installation
 1. Download python version 3.12.4
