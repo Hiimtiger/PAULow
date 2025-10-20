@@ -13,7 +13,7 @@ Our network architecture is depicted in **Figure 1.** We adopted the Attention U
   <b>Figure 1.</b> Overview of the proposed model architecture.
 </p>
 
-## Dynamic Loss Function Selecction Method:
+## Dynamic Loss Function Selection Method:
 To address the foreground-background imbalance in the cropped dataset while retaining all training patches, we proposed an adaptive, dynamic, threshold-based loss function strategy (see **Figure 2.**). Predicted masks were categorized into three types: background patches, small ROI patches, and large ROI patches. A patch was classified as a small ROI patch if the predicted foreground area was less than 6.25% of the patch. The overall loss framework combined three loss functions: Binary Cross-Entropy (BCE) loss, Tversky loss, and Focal Tversky loss. The loss function changes dynamically for every predicted image. This method **stabalized training while preventing model hallucinations** (false positives/false negatives) during training and inference. The trained model is also **able to identify foreground and background patches without the need of a classifier head**. Furthermore, the three loss functions can also be changed to adapt to user's specific task. 
 
 <p align="center">
